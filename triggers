@@ -1,0 +1,24 @@
+CREATE OR REPLACE TRIGGER t1
+AFTER INSERT OR DELETE OR UPDATE ON customers
+FOR EACH ROW
+DECLARE
+    v_oldsal NUMBER(10);
+    v_newsal NUMBER(10);
+    v_saldiff NUMBER(10);
+BEGIN
+    IF INSERTING THEN
+        v_saldiff := :new.sal;
+        DBMS_OUTPUT.PUT_LINE('SALDIFF (INSERT): ' || v_saldiff);
+    ELSIF UPDATING THEN
+        v_oldsal := :old.sal;
+        v_newsal := :new.sal;
+        v_saldiff := v_oldsal - v_newsal;
+        DBMS_OUTPUT.PUT_LINE('SALDIFF (UPDATING): ' || v_saldiff);
+    ELSIF DELETING THEN
+        v_oldsal := :old.sal;
+        v_newsal := 0;
+        v_saldiff := v_oldsal - v_newsal;
+        DBMS_OUTPUT.PUT_LINE('SALDIFF (DELETING): ' || v_saldiff);
+    END IF;
+END;
+/
