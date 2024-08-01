@@ -1,0 +1,16 @@
+declare
+	vid varchar(10);
+	vname varchar(10);
+cursor c1 is
+select eid,eaname from emp;
+begin
+open c1;
+loop
+    fetch c1 into vid,vname;
+	exit when c1%notfound;
+	dbms_output.put_line('employ id;'||vid);
+	dbms_output.put_line('employ name;'||vname);
+	end loop;
+close c1;
+end;
+/
